@@ -14,7 +14,7 @@ const CONTACT_METHODS = [
     icon: Github,
     label: 'GitHub',
     value: 'github.com/framora',
-    href: 'https://github.com',
+    href: 'https://github.com/Atharva-0707',
     description: 'Report issues, view source, or contribute.',
   },
   {

@@ -767,36 +767,6 @@ http://localhost:5000
 
 ---
 
-# ☁️ Deployment
-
-Framora's frontend and backend are deployed separately.
-
-## Frontend Deployment
-
-The React/Vite frontend can be deployed using services such as:
-
-* Vercel
-* Netlify
-* Render Static Site
-
-Configure the frontend's production environment variables according to `frontend/.env.example`.
-
-The frontend must point to the deployed backend API URL.
-
----
-
-## Backend Deployment
-
-The Node.js/Express backend can be deployed using services such as:
-
-* Render
-* Railway
-* Fly.io
-* Other Node.js-compatible hosting platforms
-
-Configure the production environment variables according to `backend/.env.example`.
-
----
 
 # 🌍 Production Architecture
 
