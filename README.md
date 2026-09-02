@@ -14,7 +14,7 @@ The platform combines a photography-focused social experience with a transaction
 
 **Backend API:** 
 
-**GitHub Repository:** 
+**GitHub Repository:** Atharva-0707/Framora
 
 > The frontend and backend are deployed separately. The React frontend communicates with the Node.js/Express backend through REST APIs and Socket.IO.
 
@@ -25,31 +25,60 @@ The platform combines a photography-focused social experience with a transaction
 
 ### 🏠 Home / Feed
 
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/c85153f2-0829-4d4f-aa41-7031614fea45" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/bad15024-f2bd-43ac-bca2-1ddc1694b087" />
 
 
 ### 📸 Photo Details
 
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/b9de440c-d63e-4f6b-a4da-4e356c4ace09" />
 
 
 ### 👤 Photographer Profile
 
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/ac4c96be-1a1f-45d8-bc63-b98548c02ff3" />
 
 
 ### 🛒 Marketplace
 
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/dcd12675-c1a8-46d6-b928-77be39117f4b" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/cc9f51c3-e423-4e3b-995c-aa61e10e9c1d" />
 
 
 ### 💳 Purchase / Checkout
 
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/08ecaab5-82c0-4b4e-a6f1-1f947a8a48a0" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/9079da5b-8f07-4795-a827-7a5347d840fb" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/fe99fc92-28f5-4e54-9bcb-1fbcb55ad629" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/7faa7846-26e2-455a-8ea6-847a02f771ad" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/4a60a7a0-2dd1-4249-b81c-4da4d3eed297" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/873e931b-381e-4c47-b1f5-f3faae2a8c50" />
 
 
 ### 📊 Purchases & Sales
 
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/05bf1b86-98c5-44a8-8434-c57914459dad" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/1ef3e116-e7ac-4916-8763-0e6ded88b80e" />
 
 
 ### 💬 Real-Time Comments
 
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/4ab7fceb-ae22-4e71-8856-74f2baf18712" />
 
+
+### 👤 Sign-up & Login
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/82cc81c4-7252-43b0-bc42-a0b3d315eaf8" />
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/508f94e6-d621-4613-b96f-dd4eadbd22d3" />
 
 ---
 
@@ -977,9 +1006,9 @@ Bennett University
 
 ### Connect With Me
 
-**LinkedIn:** ``
+**LinkedIn:** `www.linkedin.com/in/atharva-srivastava-83073429a`
 
-**GitHub:** ``
+**GitHub:** `https://github.com/Atharva-0707`
 
 ---
 
