@@ -10,21 +10,27 @@ const { validateEnv } = require('./src/config/envValidator');
 const app = require('./src/app');
 const { initSocket } = require('./src/config/socket');
 
+const seedData = require('./src/utils/seedData');
+
 const startServer = async () => {
-  // Validate critical environment configuration
   validateEnv();
 
-  // Connect to Database
   await connectDB();
+
+  // Automatically seed the database when it is empty.
+  await seedData();
 
   const PORT = process.env.PORT || 5050;
   const server = http.createServer(app);
 
-  // Initialize Socket.IO with HTTP server
   initSocket(server);
 
   server.listen(PORT, () => {
-    console.log(`🚀 Framora API Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+    console.log(
+      `🚀 Framora API Server running in ${
+        process.env.NODE_ENV || 'development'
+      } mode on port ${PORT}`
+    );
     console.log(`📡 API Base URL: http://localhost:${PORT}/api`);
     console.log(`⚡ Socket.IO Server integrated and active on port ${PORT}`);
   });

@@ -208,7 +208,8 @@ const seedData = async () => {
 
     console.log('✅ Demo seed initialized successfully!');
   } catch (error) {
-    console.error('Seed error:', error.message);
+    console.error('❌ Seed error:', error);
+    throw error;
   }
 };
 
