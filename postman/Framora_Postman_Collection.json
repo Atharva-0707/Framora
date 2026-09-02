@@ -1,0 +1,524 @@
+{
+  "info": {
+    "_postman_id": "framora-api-collection-2026",
+    "name": "Framora - Photography Platform API",
+    "description": "Complete REST API Collection for Framora: Full-Stack Photography Community & 1-of-1 Digital Marketplace Platform.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5050/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "postId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "commentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test_photographer\",\n  \"name\": \"Test Photographer\",\n  \"email\": \"test@framora.art\",\n  \"password\": \"password123\",\n  \"location\": \"Tokyo, Japan\",\n  \"bio\": \"Street and documentary shooter.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"elena@framora.art\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Get All Posts (Feed / Search / Filter)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/posts?page=1&limit=12&filter=latest",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "12" },
+                { "key": "filter", "value": "latest" },
+                { "key": "tag", "value": "landscape", "disabled": true },
+                { "key": "search", "value": "Patagonia", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Post by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "{{postId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Post (Multipart / URL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Dusk over Alpine Lakes", "type": "text" },
+                { "key": "caption", "value": "Shot right after sunset with 30s long exposure.", "type": "text" },
+                { "key": "location", "value": "Swiss Alps", "type": "text" },
+                { "key": "camera", "value": "Sony Alpha A7 IV", "type": "text" },
+                { "key": "lens", "value": "FE 24-70mm F2.8 GM", "type": "text" },
+                { "key": "focalLength", "value": "35mm", "type": "text" },
+                { "key": "aperture", "value": "f/8.0", "type": "text" },
+                { "key": "shutterSpeed", "value": "30s", "type": "text" },
+                { "key": "iso", "value": "100", "type": "text" },
+                { "key": "imageUrl", "value": "https://images.unsplash.com/photo-1506744038136-46273834b3fb", "type": "text" },
+                { "key": "tags", "value": "landscape,alps,longexposure", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts"]
+            }
+          }
+        },
+        {
+          "name": "Update Post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Updated Title", "type": "text" },
+                { "key": "caption", "value": "Updated photo story.", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "{{postId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Sale Settings (Owner Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"saleStatus\": \"FOR_SALE\",\n  \"price\": 1499,\n  \"currency\": \"INR\",\n  \"licenseInfo\": \"1-of-1 Original High-Resolution Master License.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts/{{postId}}/sale",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "{{postId}}", "sale"]
+            }
+          }
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/posts/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "{{postId}}"]
+            }
+          }
+        },
+        {
+          "name": "Toggle Like Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/posts/{{postId}}/like",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "{{postId}}", "like"]
+            }
+          }
+        },
+        {
+          "name": "Toggle Bookmark Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/posts/{{postId}}/bookmark",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "{{postId}}", "bookmark"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Marketplace & Purchases",
+      "item": [
+        {
+          "name": "Create Purchase Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/purchases/{{postId}}/create-order",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchases", "{{postId}}", "create-order"]
+            }
+          }
+        },
+        {
+          "name": "Verify Purchase Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpay_order_id\": \"order_...\",\n  \"razorpay_payment_id\": \"pay_...\",\n  \"razorpay_signature\": \"...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/purchases/{{postId}}/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchases", "{{postId}}", "verify"]
+            }
+          }
+        },
+        {
+          "name": "Get My Purchases (Buyer Ledger)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/purchases/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchases", "me"]
+            }
+          }
+        },
+        {
+          "name": "Get My Sales (Seller Ledger & Revenue)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/purchases/sales",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchases", "sales"]
+            }
+          }
+        },
+        {
+          "name": "Get Authorized Download Link",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/purchases/download/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchases", "download", "{{postId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Get Post Comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "{{postId}}", "comments"]
+            }
+          }
+        },
+        {
+          "name": "Add Comment to Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Incredible dynamic range and composition!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "{{postId}}", "comments"]
+            }
+          }
+        },
+        {
+          "name": "Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/comments/{{commentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "{{commentId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/elena_rodriguez",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "elena_rodriguez"]
+            }
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Elena Rodriguez", "type": "text" },
+                { "key": "bio", "value": "Landscape & astrophotographer in Patagonia.", "type": "text" },
+                { "key": "location", "value": "Bariloche, Argentina", "type": "text" },
+                { "key": "website", "value": "https://elenaphoto.art", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Toggle Follow User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/follow",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}", "follow"]
+            }
+          }
+        },
+        {
+          "name": "Get Bookmarked Posts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/bookmarks",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "bookmarks"]
+            }
+          }
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/search?query=elena",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "search"],
+              "query": [
+                { "key": "query", "value": "elena" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
