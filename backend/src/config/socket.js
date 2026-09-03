@@ -6,25 +6,36 @@ let io = null;
 
 const getAllowedOrigins = () => {
   const isProduction = process.env.NODE_ENV === 'production';
-  const clientUrls = (process.env.CLIENT_URL || '')
+  const rawUrls = (process.env.CLIENT_URL || '')
     .split(',')
-    .map((url) => url.trim())
+    .map((url) => url.trim().replace(/\/+$/, ''))
     .filter(Boolean);
 
+  const productionOrigins = Array.from(
+    new Set([
+      ...rawUrls,
+      'https://framora-sigma.vercel.app',
+      'https://framora.vercel.app',
+    ])
+  );
+
   if (isProduction) {
-    return clientUrls;
+    return productionOrigins;
   }
-  return [
-    ...clientUrls,
-    'http://localhost:5174',
-    'http://localhost:5173',
-    'http://127.0.0.1:5174',
-    'http://127.0.0.1:5173',
-    'http://localhost:5175',
-    'http://127.0.0.1:5175',
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-  ];
+
+  return Array.from(
+    new Set([
+      ...productionOrigins,
+      'http://localhost:5174',
+      'http://localhost:5173',
+      'http://127.0.0.1:5174',
+      'http://127.0.0.1:5173',
+      'http://localhost:5175',
+      'http://127.0.0.1:5175',
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+    ])
+  );
 };
 
 /**
@@ -38,8 +49,9 @@ const initSocket = (httpServer) => {
         if (!origin) {
           return callback(null, true);
         }
+        const normalizedOrigin = origin.trim().replace(/\/+$/, '');
         const allowed = getAllowedOrigins();
-        if (allowed.includes(origin)) {
+        if (allowed.includes(normalizedOrigin)) {
           return callback(null, true);
         }
         return callback(new Error('Origin not allowed by Socket.IO CORS'));
