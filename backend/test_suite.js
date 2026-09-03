@@ -374,15 +374,22 @@ async function runSuite() {
     }
     return [
       ...clientUrls,
+      'http://localhost:5174',
       'http://localhost:5173',
+      'http://127.0.0.1:5174',
       'http://127.0.0.1:5173',
+      'http://localhost:5175',
+      'http://127.0.0.1:5175',
       'http://localhost:3000',
+      'http://127.0.0.1:3000',
     ].includes(origin);
   }
 
   assert(checkOriginAllowed('https://framora.app', true, 'https://framora.app') === true, 'Production accepts configured CLIENT_URL');
-  assert(checkOriginAllowed('http://localhost:5173', true, 'https://framora.app') === false, 'Production strictly rejects localhost origin');
-  assert(checkOriginAllowed('http://localhost:5173', false, 'http://localhost:5173') === true, 'Development accepts localhost origin');
+  assert(checkOriginAllowed('http://localhost:5174', true, 'https://framora.app') === false, 'Production strictly rejects localhost:5174 origin');
+  assert(checkOriginAllowed('http://localhost:5173', true, 'https://framora.app') === false, 'Production strictly rejects localhost:5173 origin');
+  assert(checkOriginAllowed('http://localhost:5174', false, 'http://localhost:5174') === true, 'Development accepts localhost:5174 origin');
+  assert(checkOriginAllowed('http://localhost:5173', false, 'http://localhost:5173') === true, 'Development accepts localhost:5173 origin');
   assert(checkOriginAllowed(undefined, true, 'https://framora.app') === true, 'Production safely allows no-origin server-to-server requests');
 
   // ==========================================
@@ -489,6 +496,57 @@ async function runSuite() {
   });
   assert(guestSocketAuth.authenticated === false, 'Guest socket handshake handled safely');
 
+  // ==========================================
+  // 15. Demo Accounts Automatic Seeding & End-to-End Auth
+  // ==========================================
+  console.log('\n--- 15. Demo Accounts Automatic Seeding & End-to-End Auth ---');
+  const connectDB = require('./src/config/db');
+  const seedData = require('./src/utils/seedData');
+
+  await connectDB();
+
+  // Run seed
+  await seedData();
+
+  const demoAccounts = [
+    { email: 'elena@framora.art', username: 'elena_rodriguez', role: 'user' },
+    { email: 'kai@framora.art', username: 'kai_takahashi', role: 'user' },
+    { email: 'maya@framora.art', username: 'maya_chen', role: 'user' },
+    { email: 'marcus@framora.art', username: 'marcus_vance', role: 'admin' },
+  ];
+
+  for (const acct of demoAccounts) {
+    const user = await User.findOne({ email: acct.email }).select('+password');
+    assert(Boolean(user), `Demo user ${acct.email} seeded successfully`);
+    assert(user.username === acct.username, `Demo username for ${acct.email} is ${acct.username}`);
+    assert(user.role === acct.role, `Demo user ${acct.email} has role ${acct.role}`);
+
+    const isMatch = await user.matchPassword('password123');
+    assert(isMatch === true, `Demo user ${acct.email} password verification succeeds with password123`);
+
+    // Verify token generation & validation
+    const userToken = generateToken(user._id);
+    const verified = jwt.verify(userToken, process.env.JWT_SECRET);
+    assert(verified.id === user._id.toString(), `JWT token valid for demo user ${acct.email}`);
+  }
+
+  // Verify demo posts are present
+  const demoPostCount = await Post.countDocuments();
+  assert(demoPostCount >= 5, `Initial demo posts seeded successfully (${demoPostCount} posts found)`);
+
+  // Verify seeding idempotency (running seedData again does not duplicate records)
+  const initialUserCount = await User.countDocuments();
+  await seedData();
+  const secondUserCount = await User.countDocuments();
+  const secondPostCount = await Post.countDocuments();
+  assert(initialUserCount === secondUserCount, 'Seeding is idempotent: User count remains identical on repeated run');
+  assert(demoPostCount === secondPostCount, 'Seeding is idempotent: Post count remains identical on repeated run');
+
+  // Verify simulated /api/auth/me payload
+  const elenaUser = await User.findOne({ email: 'elena@framora.art' });
+  assert(Boolean(elenaUser._id), '/api/auth/me user profile resolution succeeds');
+  assert(elenaUser.name === 'Elena Rodriguez', 'User profile contains accurate metadata');
+
   console.log('\n====================================================');
   console.log(`Test Execution Summary: ${passed} Passed, ${failed} Failed`);
   console.log('====================================================\n');
@@ -496,6 +554,7 @@ async function runSuite() {
   if (failed > 0) {
     process.exit(1);
   }
+  process.exit(0);
 }
 
 runSuite().catch((err) => {

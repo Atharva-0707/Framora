@@ -89,8 +89,9 @@ export const LoginPage = () => {
         showToast(`Signed in as ${res.user.name}`, 'success');
         navigate(from, { replace: true });
       }
-    } catch {
-      showToast('Demo login failed. Seed the database first.', 'error');
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Unable to sign in to the demo account.';
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
